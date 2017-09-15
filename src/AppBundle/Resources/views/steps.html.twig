@@ -1,0 +1,55 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}Steps Interact Test{% endblock %}
+
+{% block layout_head %}
+    <div class="jumbotron">
+        <h1>What are the steps for this exercise</h1>
+    </div>
+{% endblock %}
+
+{% block layout_body %}
+    <div class="row">
+        <ol>
+            <li>change the remote of the fork <code>git remote set-url origin https://github.com/jeremylefevrenet/job-application.git</code>
+            <li>update of the project with composer
+            <li>error asseticbundle not present <code>install assetic bundle composer require symfony/assetic-bundle</code>
+            <li>create dev environement app_dev.php (to be removed or filter by IP adress if go to production)
+            <li>installation of mariaDB set the port 3307 (3306 already taken from my Mysql server)
+            <li>check the DB access configuration in the parameter.
+            <li>create the DB <code> php app/console doctrine:database:create </code>
+            <li>creation of the modele with the command line <code>php bin/console doctrine:database:create</code>
+                label is replaced by title as it is reserved by symfony.
+                Create the new entity in the database <code>php app/console doctrine:schema:update --dump-sql</code> (to check the SQL code generated) && <code>php app/console doctrine:schema:update --force</code> (to execute de SQL querie(s))
+            <li>modification of the new created entity to add assert as it is in the project description
+            <li>add in the entity 2 methods to get the article with the 2 TVA
+            <li>creation and externalization of the form to create a new article in the repository AppBundle/Form <code>php app/console doctrine:generate:form AppBundle:Article</code>
+            <li>instantiate a new article and create a form in the controller.
+            <li>in the twig view I get the parent template base.html.twig and I fill in the diffrent blocks : title & body
+            <li>in the body I set the bootstrap template to display my results in a table or an error message if the table is emtpy and the form.
+                Also to have a better visibility on my code I created a parent template called layout.html.twig located in my bundle ressources folder and I also put the navigation, and the flashbag handling in external files navigation.html.twig and flashbag.html.twig that I include in that parent template.
+            <li>in the controller, handle the new articles submitted in the form and if success add a message in the flashbag to display to the customer that everything is ok
+            <li>on the view I add 3 button and I catch the on click event on each of them, one is to show all amounts, another to display only the VAT1 and the last to display only the VAT2
+            <li>I write a unit test for the VAT (I use the phpunit installed with symfony in vendor/phpunit/phpunit/phpunit) <code>php vendor\phpunit\phpunit\phpunit --bootstrap src\AppBundle\DemoTest\DemoArticle.php src\AppBundle\Tests\Controller\ArticleTest.php</code>
+            <li>to have a more complete platform I added the possibility to edit an article by clicking direcly on his label in the ain view, and also to delete it, done via ajax</li>    
+        </ol>
+    </div>
+    <hr>
+    <div class="row alert alert-info">
+        <h2>My sources, because, I don't know everything by heart...</h2>
+        <ul>
+            <li><a href="https://phpunit.de" target="_blank">https://phpunit.de</a></li>
+            <li><a href="http://getbootstrap.com" target="_blank">http://getbootstrap.com</a></i>
+            <li><a href="http://fontawesome.io" target="_blank">http://fontawesome.io</a></li>
+            <li><a href="https://symfony.com" target="_blank">https://symfony.com</a></li>
+            <li><a href="http://jquery.com" target="_blank">http://jquery.com</a></li>
+        </ul>
+    </div>
+    
+    <div class="row alert alert-warning">
+        <h2>Points to improves...</h2>
+        <ul>
+            <li>Unit tests with phpunit</li>
+        </ul>
+    </div>
+{% endblock %}

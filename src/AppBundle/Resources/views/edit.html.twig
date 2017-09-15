@@ -1,0 +1,11 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}Edition Interact Test{% endblock %}
+
+{% block body %}
+    {{parent()}}
+    
+    <h1><i class="fa fa-edit" aria-hidden="true"></i> Edit your article</h1>
+    {{include('AppBundle::form.html.twig') }}
+
+{% endblock %}

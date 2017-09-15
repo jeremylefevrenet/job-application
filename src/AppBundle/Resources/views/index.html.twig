@@ -1,0 +1,97 @@
+{% extends 'AppBundle::layout.html.twig' %}
+
+{% block title %}Index Interact Test{% endblock %}
+
+{% block layout_head %}
+    <div class="jumbotron">
+        <h1>Article dashboard</h1>
+        <p>
+            Test from Interact by Jeremy Lefevre. Goal is to have a test platform to add articles in a database. Each article is listed and the price is displayed without and with 2 diffrents VAT.
+        </p>
+        <p>This calculation is done on server side and validated by a unit test</p>
+        <p>We also need to be possible to filter prices, if the customer want to display only 1 on both VAT or all informations.</p>
+        <p>This calculation is done on the client side, but could be easyly managable on server side.</p>
+    </div>
+{% endblock %}
+
+{% block layout_body %}
+    <div class="row">
+        <div class="col-sm-7 col-xs-12">
+            <div class="row">
+                <div class="col-xs-4">
+                    <button class="btn btn-block btn-sucess btn-all">All</button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-block btn-warning btn-vat1">Only VAT1</button>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-block btn-warning btn-vat2">Only VAT2</button>
+                </div>
+            </div>
+            <hr>
+
+            {% for article in articles %}
+            <div class="row" id="{{article.id}}" style="position:relative;">
+                <div style="position: absolute; right: 5px; top: 5px; cursor: pointer; z-index: 10"><i class="fa fa-remove" aria-hidden="true"></i></div>
+                <div class="col-xs-12">
+                    <a href="{{path('editpage', {'id' : article.id}) }}">
+                        <h1><i class="fa fa-caret-down" aria-hidden="true"></i> {{article.creation|date('m-d-Y')}} - <b>{{article.title}}</b></h1>
+                    </a>
+                </div>
+                        {% if article.description is not empty %} <div class="col-xs-12 well"><i>{{article.description|nl2br}}</i></div> {% endif %}
+
+                <div class="col-xs-4 novat">Without VAT <b>{{article.amountHT}} &euro;</b></div>
+                <div class="col-xs-4 vat1">VAT 1 <b>{{article.amountVAT1}} &euro;</b></div>
+                <div class="col-xs-4 vat2">VAT 2 <b>{{article.amountVAT2}} &euro;</b></div>
+                <div class="col-xs-12"><hr></div>
+            </div>
+            {% else %}
+                <div class="alert alert-danger">
+                    There is no on article registred, please use the add article form to add a new one
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-sm-4 col-md-offset-1 col-xs-12 well">
+            <h1><i class="fa fa-plus-circle" aria-hidden="true"></i> Add a new article</h1>
+            {{include('AppBundle::form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{parent()}}
+    <script>
+        $('.btn-all').click(function() {
+           $('.novat, .vat1, .vat2').show(); 
+        });
+        $('.btn-vat1').click(function() {
+           $('.vat1').show(); 
+           $('.novat, .vat2').hide(); 
+        });
+        $('.btn-vat2').click(function() {
+           $('.vat2').show(); 
+           $('.novat, .vat1').hide(); 
+        });
+        
+        $('.fa-remove').click( function() {
+            $(this)
+                    .removeClass('fa-remove')
+                    .addClass('fa-spin fa-spinner');
+            
+            var rootElement = $(this).parent().parent()
+            $.ajax( {
+                url: "{{ path('deletepage')}}/"+$(rootElement).attr('id'),
+                dataType: "json",
+                success: function( data ) {
+                    if(data.response)
+                        $(rootElement).fadeOut('fast', function() { $(this).remove(); });
+                    else
+                        $(this)
+                            .removeClass('fa-spin fa-spinner')
+                            .addClass('fa-remove');
+                }
+              });
+        })
+    </script>
+{% endblock %}

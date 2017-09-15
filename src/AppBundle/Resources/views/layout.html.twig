@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{include('AppBundle::navigation.html.twig') }}
+    <div style="padding-top: 70px">
+    {% block layout_head %}{% endblock %}
+    {{include('AppBundle::flashbag.html.twig') }}
+        {% block layout_body %}{% endblock %}
+    </div>
+{% endblock %}  
+
+{% block javascripts %}
+    <script src="https://use.fontawesome.com/9ae3f71b18.js"></script>
+{% endblock %}  
